@@ -3,7 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(whitespace-line-column 100))
+ '(whitespace-line-column 100)
+ '(sp-override-key-bindings (quote (("M-<up>" . nil) ("M-<down>" . nil) ("M-<backspace>" . nil)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -18,8 +19,10 @@
 ;;; C-c C-g -> goto-line
 (global-set-key (kbd "C-c C-g") 'goto-line)
 
-;;; S-{up,down} -> scroll-{up,down}-line
-;;; NOTE: I wanted this to be M-up/down, but I cannot get prelude's
-;;; smartparens init to not override those.
-(global-set-key (kbd "S-<up>") 'scroll-up-line)
-(global-set-key (kbd "S-<down>") 'scroll-down-line)
+;;; M-{up,down} -> scroll-{up,down}-line
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
+(global-set-key (kbd "M-<up>") 'scroll-down-line)
+
+;;; C-<backspace> -> backword-kill-word
+(global-set-key (kbd "C-<backspace>") 'backward-kill-word)
+(global-set-key (kbd "M-<backspace>") 'backward-kill-word)
