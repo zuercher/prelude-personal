@@ -31,5 +31,13 @@
 ;;; Set JS indent to 2 spaces
 (set-variable 'js2-basic-offset 2)
 
+;;; Set C indent to 2 spaces
+(defun zuercher-c-mode-common-defaults ()
+  (setq c-default-style "gnu"
+        c-basic-offset 2)
+  (c-set-offset 'substatement-open 0))
+
+(setq prelude-c-mode-common-hook 'zuercher-c-mode-common-defaults)
+
 ;;; STFU
 (setq prelude-guru nil)
