@@ -31,11 +31,29 @@
 ;;; Set JS indent to 2 spaces
 (set-variable 'js2-basic-offset 2)
 
-;;; Set C indent to 2 spaces
+;;; Could not get .dir-locals.el to work, so cribbed this from:
+;;; https://emacs.stackexchange.com/questions/2/different-indentation-styles-for-different-projects
+(defvar zuercher-guessed-project nil)
+(make-variable-buffer-local 'zuercher-guessed-project)
+(defun zuercher-guess-project-from-file-name ()
+  (save-match-data
+    (setq zuercher-guessed-project
+          (cond
+           ((string-match "/envoy/" buffer-file-name)
+            'google)
+           ((string-match "/turbinelabs-envoy/" buffer-file-name)
+            'google)
+           (t 'default)
+           ))))
+
 (defun zuercher-c-mode-common-defaults ()
-  (setq c-default-style "gnu"
-        c-basic-offset 2)
-  (c-set-offset 'substatement-open 0))
+  (zuercher-guess-project-from-file-name)
+  (pcase zuercher-guessed-project
+   ('google (c-set-style "google"))
+   ('default (c-set-style "gnu")
+     (setq c-basic-offset 2)
+     (c-set-offset 'substatement-open 0))
+   ))
 
 (setq prelude-c-mode-common-hook 'zuercher-c-mode-common-defaults)
 
