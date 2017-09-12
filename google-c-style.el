@@ -230,7 +230,6 @@ Suitable for arglist-cont-nonempty, brace-list-intro, brace-list-close, statemen
 
 (defun google-c-lineup-parens (langelem)
   "If we see an expression while surrounded by parens, line it up to 1+ paren level.
-If this is a function call, line up to the 2+ base indent level instead.
 Suitable for `arglist-cont-nonempty'"
   (save-excursion
     (back-to-indentation)
@@ -251,9 +250,9 @@ Suitable for `arglist-cont-nonempty'"
              (goto-char saved-point)
              (c-lineup-arglist-intro-after-paren langelem))
             ((looking-at "[[:alpha:]]")
-             ;; we are at a function call, so indent 4
-             (progn (back-to-indentation)
-                    (vector (+ 4 (current-column)))))
+             ;; we are at a function call, so indent to 1+ paren
+             (goto-char saved-point)
+             (c-lineup-arglist-intro-after-paren langelem))
             (t
              ;; we are at an expression, so indent to 1+ paren
              (goto-char saved-point)
