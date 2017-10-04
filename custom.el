@@ -50,6 +50,11 @@
            ))))
 
 (defun zuercher-c-mode-common-defaults ()
+  ;; My custom install of cc-mode 5.33 does not derive from prog-mode
+  ;; (this may change when it lands in the emacs release). For now,
+  ;; for prog-mode defaults so I get my smart parens and whitespace
+  ;; highlighting.
+  (prelude-prog-mode-defaults)
   (zuercher-guess-project-from-file-name)
   (pcase zuercher-guessed-project
    ('google (c-set-style "google"))
@@ -66,5 +71,8 @@
 
 (add-hook 'prelude-go-mode-hook 'zuercher-go-mode-defaults)
 
-;;; STFU
+;;; disable ido filename guess based on the current point
+(setq ido-use-filename-at-point nil)
+
+;;; STFU with the hints
 (setq prelude-guru nil)
