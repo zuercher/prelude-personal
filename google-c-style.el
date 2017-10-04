@@ -349,7 +349,7 @@ Suitable for `arglist-cont-nonempty'"
                             google-c-lineup-blocks
                             ++))
                         (label . /)
-                        (case-label . +)
+                        (case-label . 0)
                         (statement-case-open . +)
                         (statement-case-intro . +) ; case w/o {
                         (access-label . /)
