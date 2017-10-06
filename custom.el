@@ -52,9 +52,12 @@
 (defun zuercher-c-mode-common-defaults ()
   ;; My custom install of cc-mode 5.33 does not derive from prog-mode
   ;; (this may change when it lands in the emacs release). For now,
-  ;; for prog-mode defaults so I get my smart parens and whitespace
-  ;; highlighting.
+  ;; run prelude-prog-mode defaults so I get my smart parens and
+  ;; whitespace highlighting.
   (prelude-prog-mode-defaults)
+
+  (c-subword-mode)
+
   (zuercher-guess-project-from-file-name)
   (pcase zuercher-guessed-project
    ('google (c-set-style "google"))
