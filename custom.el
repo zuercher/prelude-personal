@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (protobuf-mode csv-mode cmake-mode zop-to-char zenburn-theme yari yaml-mode volatile-highlights vkill undo-tree smex smartrep smartparens smart-mode-line scala-mode2 ruby-tools rainbow-mode rainbow-delimiters ox-gfm ov operate-on-number move-text markdown-mode magit json-mode js2-mode inf-ruby ido-ubiquitous guru-mode grizzl gotest god-mode go-projectile gitignore-mode gitconfig-mode git-timemachine gist flycheck flx-ido expand-region exec-path-from-shell elisp-slime-nav easy-kill dockerfile-mode discover-my-major diminish diff-hl company-go browse-kill-ring beacon anzu ace-window)))
+    (thrift go-mode php-mode protobuf-mode csv-mode cmake-mode zop-to-char zenburn-theme yari yaml-mode volatile-highlights vkill undo-tree smex smartrep smartparens smart-mode-line scala-mode2 ruby-tools rainbow-mode rainbow-delimiters ox-gfm ov operate-on-number move-text markdown-mode magit json-mode js2-mode inf-ruby ido-ubiquitous guru-mode grizzl gotest god-mode go-projectile gitignore-mode gitconfig-mode git-timemachine gist flycheck flx-ido expand-region exec-path-from-shell elisp-slime-nav easy-kill dockerfile-mode discover-my-major diminish diff-hl company-go browse-kill-ring beacon anzu ace-window)))
  '(sp-override-key-bindings (quote (("M-<up>") ("M-<down>") ("M-<backspace>"))))
  '(whitespace-line-column 100))
 
@@ -67,7 +67,8 @@
    ))
 
 (defun zuercher-go-mode-defaults ()
-  (setq tab-width 4))
+  (setq tab-width 4)
+  (local-set-key (kbd "M-.") 'godef-jump))
 
 
 (setq prelude-c-mode-common-hook 'zuercher-c-mode-common-defaults)
