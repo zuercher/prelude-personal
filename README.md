@@ -15,3 +15,12 @@ emacs -batch -f batch-byte-compile ~/.emacs.d/core/*.el
 git clone git@github.com:zuercher/prelude-personal.git
 ~/personal/prelude-personal/link-files.sh
 ```
+
+## Emacs 25 on older Ubuntu
+
+```shell
+sudo add-apt-repository ppa:ubuntu-elisp/ppa
+sudo apt-get update
+sudo apt-get install emacs25-nox         # or just emac25 (includes X Windows support)
+sudo update-alternatives --config emacs  # pick emacs25
+```
