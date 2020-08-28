@@ -46,6 +46,8 @@
             'google)
            ((string-match "/slack-envoy/" buffer-file-name)
             'google)
+           ((string-match "/zuercher-envoy/" buffer-file-name)
+            'google)
            (t 'default)
            ))))
 
