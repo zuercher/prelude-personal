@@ -4,9 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (erlang scala-mode thrift go-mode php-mode protobuf-mode csv-mode cmake-mode zop-to-char zenburn-theme yari yaml-mode volatile-highlights vkill undo-tree smex smartrep smartparens smart-mode-line scala-mode2 ruby-tools rainbow-mode rainbow-delimiters ox-gfm ov operate-on-number move-text markdown-mode magit json-mode js2-mode inf-ruby ido-ubiquitous guru-mode grizzl gotest god-mode go-projectile gitignore-mode gitconfig-mode git-timemachine gist flycheck flx-ido expand-region exec-path-from-shell elisp-slime-nav easy-kill dockerfile-mode discover-my-major diminish diff-hl company-go browse-kill-ring beacon anzu ace-window)))
- '(sp-override-key-bindings (quote (("M-<up>") ("M-<down>") ("M-<backspace>"))))
+   '(jtsx graphql-mode erlang scala-mode thrift go-mode php-mode protobuf-mode csv-mode cmake-mode zop-to-char zenburn-theme yari yaml-mode volatile-highlights vkill undo-tree smex smartrep smartparens smart-mode-line scala-mode2 ruby-tools rainbow-mode rainbow-delimiters ox-gfm ov operate-on-number move-text markdown-mode magit json-mode js2-mode inf-ruby ido-ubiquitous guru-mode grizzl gotest god-mode go-projectile gitignore-mode gitconfig-mode git-timemachine gist flycheck flx-ido expand-region exec-path-from-shell elisp-slime-nav easy-kill dockerfile-mode discover-my-major diminish diff-hl company-go browse-kill-ring beacon anzu ace-window))
+ '(sp-override-key-bindings '(("M-<up>") ("M-<down>") ("M-<backspace>")))
  '(whitespace-line-column 100))
 
 (custom-set-faces
@@ -21,7 +20,7 @@
                 'move-beginning-of-line)
 
 ;;; C-c C-g -> goto-line
-(global-set-key (kbd "C-c C-g") 'goto-line)
+(global-set-key (kbd "C-x C-g") 'goto-line)
 
 ;;; M-{up,down} -> scroll-{up,down}-line
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
@@ -75,7 +74,7 @@
 (defun zuercher-go-mode-defaults ()
   (setq tab-width 4)
   (setq truncate-lines t)
-  (local-set-key (kbd "M-.") 'godef-jump))
+  #'lsp-deferred)
 
 
 (add-hook 'prelude-go-mode-hook 'zuercher-go-mode-defaults)
@@ -125,6 +124,64 @@ Suitable for inclusion in `c-offsets-alist'."
   (python-indent-guess-indent-offset))
 
 (add-hook 'prelude-python-mode-hook 'zuercher-python-mode-defaults)
+
+;;; graphql
+(defun zuercher-graphql-mode-defaults ()
+  "Personal Graphql mode defaults."
+  (setq graphql-indent-level 4))
+
+(add-hook 'graphql-mode-hook 'zuercher-graphql-mode-defaults)
+
+;;; jsx/tsx/typescript
+(use-package jtsx
+  :ensure t
+  :mode (("\\.jsx?\\'" . jtsx-jsx-mode)
+         ("\\.tsx\\'" . jtsx-tsx-mode)
+         ("\\.ts\\'" . jtsx-typescript-mode))
+  :commands jtsx-install-treesit-language
+  :hook ((jtsx-jsx-mode . hs-minor-mode)
+         (jtsx-tsx-mode . hs-minor-mode)
+         (jtsx-typescript-mode . hs-minor-mode))
+  :custom
+  ;; Optional customizations
+  (js-indent-level 4)
+  (typescript-ts-mode-indent-offset 4)
+  ;; (jtsx-switch-indent-offset 0)
+  ;; (jtsx-indent-statement-block-regarding-standalone-parent nil)
+  ;; (jtsx-jsx-element-move-allow-step-out t)
+  ;; (jtsx-enable-jsx-electric-closing-element t)
+  ;; (jtsx-enable-electric-open-newline-between-jsx-element-tags t)
+  ;; (jtsx-enable-jsx-element-tags-auto-sync nil)
+  ;; (jtsx-enable-all-syntax-highlighting-features t)
+  :config
+  (defun jtsx-bind-keys-to-mode-map (mode-map)
+    "Bind keys to MODE-MAP."
+    (define-key mode-map (kbd "C-c C-j") 'jtsx-jump-jsx-element-tag-dwim)
+    (define-key mode-map (kbd "C-c j o") 'jtsx-jump-jsx-opening-tag)
+    (define-key mode-map (kbd "C-c j c") 'jtsx-jump-jsx-closing-tag)
+    (define-key mode-map (kbd "C-c j r") 'jtsx-rename-jsx-element)
+    (define-key mode-map (kbd "C-c <down>") 'jtsx-move-jsx-element-tag-forward)
+    (define-key mode-map (kbd "C-c <up>") 'jtsx-move-jsx-element-tag-backward)
+    (define-key mode-map (kbd "C-c C-<down>") 'jtsx-move-jsx-element-forward)
+    (define-key mode-map (kbd "C-c C-<up>") 'jtsx-move-jsx-element-backward)
+    (define-key mode-map (kbd "C-c C-S-<down>") 'jtsx-move-jsx-element-step-in-forward)
+    (define-key mode-map (kbd "C-c C-S-<up>") 'jtsx-move-jsx-element-step-in-backward)
+    (define-key mode-map (kbd "C-c j w") 'jtsx-wrap-in-jsx-element)
+    (define-key mode-map (kbd "C-c j u") 'jtsx-unwrap-jsx)
+    (define-key mode-map (kbd "C-c j d") 'jtsx-delete-jsx-node)
+    (define-key mode-map (kbd "C-c j t") 'jtsx-toggle-jsx-attributes-orientation)
+    (define-key mode-map (kbd "C-c j h") 'jtsx-rearrange-jsx-attributes-horizontally)
+    (define-key mode-map (kbd "C-c j v") 'jtsx-rearrange-jsx-attributes-vertically))
+
+  (defun jtsx-bind-keys-to-jtsx-jsx-mode-map ()
+      (jtsx-bind-keys-to-mode-map jtsx-jsx-mode-map))
+
+  (defun jtsx-bind-keys-to-jtsx-tsx-mode-map ()
+      (jtsx-bind-keys-to-mode-map jtsx-tsx-mode-map))
+
+  (add-hook 'jtsx-jsx-mode-hook 'jtsx-bind-keys-to-jtsx-jsx-mode-map)
+  (add-hook 'jtsx-tsx-mode-hook 'jtsx-bind-keys-to-jtsx-tsx-mode-map))
+
 
 ;;; disable ido filename guess based on the current point
 (setq ido-use-filename-at-point nil)
